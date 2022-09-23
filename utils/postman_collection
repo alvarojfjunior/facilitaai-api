@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "b7c3eb92-f3bd-4a0c-8c09-3be5d63c797c",
-		"name": "Whatsapp Nest API",
+		"name": "Nest API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "22223074"
 	},

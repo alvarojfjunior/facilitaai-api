@@ -4,7 +4,7 @@ import { User } from '@prisma/client';
 
 import { AuthService } from './auth.service';
 import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './auth.dto';
-import { addDossier } from 'utils/dossier';
+import { addDossier } from '../../shared/helpers/dossier.helpers';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -22,7 +22,7 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() user: RegisterUserDTO): Promise<User> {
+  async register(@Body() user: User): Promise<User> {
     return this.authService.register(user);
   }
 }

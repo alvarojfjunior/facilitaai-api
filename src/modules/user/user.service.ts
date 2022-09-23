@@ -41,7 +41,7 @@ export class UserService {
     or (select count("Attendance".id) from "Attendance" where "Attendance".user_id = "User".id) = 0)`);
   }
 
-  async createUser(data: Prisma.UserCreateInput): Promise<User> {
+  async createUser(data: User): Promise<User> {
     return this.prisma.user.create({
       data,
     });

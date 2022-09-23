@@ -46,7 +46,6 @@ model User {
 
   AccessProfile AccessProfile @relation(fields: [accessProfileId], references: [id])
   Company       Company       @relation(fields: [companyId], references: [id])
-  Dossier       Dossier[]
 }
 
 model Product {
@@ -102,11 +101,9 @@ model SaleItem {
 
 model Dossier {
   id          Int      @id @default(autoincrement())
-  userId      Int?
+  userId      Int
   actionType  String   @db.VarChar(100)
   description String   @db.VarChar(100)
   identifier  Int
   timestamp   DateTime @default(now()) @db.Timestamptz
-
-  user User? @relation(fields: [userId], references: [id])
 }

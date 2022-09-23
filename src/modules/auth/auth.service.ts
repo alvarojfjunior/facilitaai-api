@@ -38,8 +38,7 @@ export class AuthService {
     const payload: any = {
       id: userData.id,
       name: userData.name,
-      email: userData.email,
-      type: userData.type,
+      email: userData.email
       // role: userData.role,
     };
 
@@ -52,7 +51,7 @@ export class AuthService {
       accessToken: accessToken,
     };
   }
-  public async register(user: RegisterUserDTO): Promise<User> {
+  public async register(user: User): Promise<User> {
     return this.userService.createUser(user);
   }
 }

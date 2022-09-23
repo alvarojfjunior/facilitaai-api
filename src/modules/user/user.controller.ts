@@ -40,12 +40,6 @@ export class UserController {
     return this.userService.findUser({ id: Number(id) });
   }
 
-  @Get('free-attendant/:type')
-  @ApiResponse({ type: BodyResponseDTO })
-  async findAll(@Param() type: string): Promise<User[]> {
-    return this.userService.getFreeAttendant(type);
-  }
-
   @Post()
   @ApiBody({ type: BodyRequestDTO })
   @ApiResponse({ type: BodyResponseDTO })

@@ -20,25 +20,14 @@ export class UserService {
     take?: number;
     cursor?: Prisma.UserWhereUniqueInput;
     where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByInput;
   }): Promise<User[]> {
-    const { skip, take, cursor, where, orderBy } = params;
+    const { skip, take, cursor, where } = params;
     return this.prisma.user.findMany({
       skip,
       take,
       cursor,
       where,
-      orderBy,
     });
-  }
-
-  async getFreeAttendant(type: any): Promise<User[]> {
-    return this.prisma.$queryRaw(`select * from "User"
-    WHERE
-     "User"."type" = '${type.type}'
-    and ((select count("Attendance".id) from "Attendance"  where  "Attendance".user_id = "User".id and "end" isnull) 
-    = (select cast(value as int) from "Setting" where id = 5)
-    or (select count("Attendance".id) from "Attendance" where "Attendance".user_id = "User".id) = 0)`);
   }
 
   async createUser(data: User): Promise<User> {

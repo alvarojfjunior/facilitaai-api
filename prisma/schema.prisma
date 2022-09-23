@@ -1,0 +1,105 @@
+generator Prisma_Code_Generator {
+  provider = "Prisma_Code_Generator"
+  output   = "../src/modules"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  slogan    String?
+  color     String?
+  whatsapp  String
+  fone      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User     User[]
+  Product  Product[]
+  Sale     Sale[]
+  Client   Client[]
+  SaleItem SaleItem[]
+}
+
+model AccessProfile {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  allowed   Json[] 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User User[]
+}
+
+model User {
+  id              Int      @id @default(autoincrement())
+  companyId       Int
+  email           String   @unique
+  name            String
+  password        String
+  accessProfileId Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  AccessProfile AccessProfile @relation(fields: [accessProfileId], references: [id])
+  Company       Company       @relation(fields: [companyId], references: [id])
+}
+
+model Product {
+  id        Int      @id @default(autoincrement())
+  companyId Int
+  name      String
+  price     Decimal  @db.Money
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Company Company @relation(fields: [companyId], references: [id])
+}
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  companyId Int
+  address   String?
+  name      String
+  fone      String?
+  whatsapp  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Company Company @relation(fields: [companyId], references: [id])
+}
+
+model Sale {
+  id          Int      @id @default(autoincrement())
+  companyId   Int
+  observation String?
+  amount      Decimal  @db.Money
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  Company  Company    @relation(fields: [companyId], references: [id])
+  SaleItem SaleItem[]
+}
+
+model SaleItem {
+  id           Int      @id @default(autoincrement())
+  companyId    Int
+  saleId       Int
+  observation  String?
+  initialValue Decimal  @db.Money
+  discount     Decimal  @db.Money
+  finalValue   Decimal  @db.Money
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  Company Company @relation(fields: [companyId], references: [id])
+  Sale    Sale    @relation(fields: [saleId], references: [id])
+}

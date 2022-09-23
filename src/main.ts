@@ -12,6 +12,7 @@ import { InvalidFormExceptionFilter } from './filters/invalid.form.exception.fil
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'error', 'warn'],
+    cors: true
   });
 
   app.setGlobalPrefix(API_PREFIX);
@@ -39,13 +40,6 @@ async function bootstrap() {
   }
 
   const PORT = process.env.PORT || GLOBAL_CONFIG.nest.port;
-
-  app.enableCors({
-    origin: ['http://localhost:3000'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-  });
 
   await app.listen(PORT, async () => {
     const myLogger = await app.resolve(MyLogger);

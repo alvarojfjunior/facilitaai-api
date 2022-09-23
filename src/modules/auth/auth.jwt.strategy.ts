@@ -2,9 +2,8 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '@prisma/client';
-import * as dotenv from 'dotenv';
-dotenv.config();
 
+import { JWT_SECRET } from '../../shared/constants/global.constants';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -13,7 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: process.env.NODE_ENV === 'dev',
-      secretOrKey: process.env.JWT_SECRET,
+      secretOrKey: JWT_SECRET,
     });
   }
 

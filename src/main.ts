@@ -11,15 +11,24 @@ import { InvalidFormExceptionFilter } from './filters/invalid.form.exception.fil
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: ['error', 'error', 'warn']
+    logger: ['error', 'error', 'warn'],
   });
 
+  const whitelist = ['http://localhost:3000', 'https://www.website.com'];
+
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://example.com',
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        console.log('allowed cors for:', origin);
+        callback(null, true);
+      } else {
+        console.log('blocked cors for:', origin);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    allowedHeaders:
+      'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
+    methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
     credentials: true,
   });
 
@@ -47,7 +56,7 @@ async function bootstrap() {
     SwaggerModule.setup(swaggerConfig.path || 'api', app, document);
   }
 
-  const PORT = process.env.PORT || 3333
+  const PORT = process.env.PORT || 3333;
 
   await app.listen(PORT, async () => {
     const myLogger = await app.resolve(MyLogger);

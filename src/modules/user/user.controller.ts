@@ -13,60 +13,46 @@ import {
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { PrismaService } from '../prisma/prisma.service';
 import { JwtAuthGuard } from '../auth/auth.jwt.guard';
-import { UserService } from './user.service';
 import { addDossier } from '../../shared/helpers/dossier.helpers';
-import { BodyRequestDTO, BodyResponseDTO } from './user.dto';
+import { BodyUpdateRequestDTO, BodyResponseDTO } from './user.dto';
 import QueryBuilder from 'prisma-query-builder';
 
 @UseGuards(JwtAuthGuard)
-@ApiTags('users')
-@Controller('users')
+@ApiTags('user')
+@Controller('user')
 export class UserController {
-  prisma: any;
-  constructor(private userService: UserService) {}
+  constructor(private prisma: PrismaService) {}
 
   @Get()
   @ApiResponse({ type: [BodyResponseDTO] })
-  @UseGuards(JwtAuthGuard)
   async getAll(@Query() query: any): Promise<User[]> {
     const queryBuilder = new QueryBuilder(query);
-    return this.userService.users(queryBuilder.filter().paginate().build());
+    return this.prisma.user.findMany(
+      queryBuilder.filter().paginate().build()
+    );
   }
 
   @Get(':id')
   @ApiResponse({ type: BodyResponseDTO })
   async getById(@Param('id') id: number): Promise<User | null> {
-    return this.userService.findUser({ id: Number(id) });
-  }
-
-  @Post()
-  @ApiBody({ type: BodyRequestDTO })
-  @ApiResponse({ type: BodyResponseDTO })
-  async signupUser(
-    @Body()
-    userData: User,
-    @Request() req: Request | any
-  ): Promise<User> {
-    const dbRes: User = await this.userService.createUser(userData);
-    addDossier(req.user.id, 'Inseriu', 'Usuários', dbRes.id);
-    return dbRes;
+    return this.prisma.user.findUnique({ where: { id: Number(id) } });
   }
 
   @Put(':id')
-  @ApiBody({ type: BodyRequestDTO })
+  @ApiBody({ type: BodyUpdateRequestDTO })
   @ApiResponse({ type: BodyResponseDTO })
   async update(
     @Param('id') id: number,
-    @Body()
-    data: User,
+    @Body() data: User,
     @Request() req: Request | any
   ): Promise<User> {
-    const dbRes: User = await this.userService.updateUser({
+    const dbRes: User = await this.prisma.user.update({
       where: { id: Number(id) },
       data,
     });
-    addDossier(req.user.id, 'Atualizou', 'Usuários', dbRes.id);
+    addDossier(req.user.id, 'Atualizou', 'Usuário', dbRes.id);
     return dbRes;
   }
 
@@ -76,8 +62,10 @@ export class UserController {
     @Param('id') id: number,
     @Request() req: Request | any
   ): Promise<User> {
-    const dbRes: User = await this.userService.deleteUser({ id: Number(id) });
-    addDossier(req.user.id, 'Deletou', 'Usuários', dbRes.id);
+    const dbRes: User = await this.prisma.user.delete({
+      where: { id: Number(id) },
+    });
+    addDossier(req.user.id, 'Deletou', 'Usuário', dbRes.id);
     return dbRes;
   }
 }

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class BodyRequestDTO {
+export class BodyUpdateRequestDTO {
   @ApiProperty()
   companyId: number;
 
@@ -9,9 +9,6 @@ export class BodyRequestDTO {
 
   @ApiProperty()
   name: string;
-
-  @ApiProperty()
-  password: string;
 
   @ApiProperty()
   accessProfileId: number;

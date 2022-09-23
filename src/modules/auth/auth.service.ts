@@ -1,25 +1,22 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
-
-import { UserService } from '../user/user.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthHelpers } from '../../shared/helpers/auth.helpers';
 import { GLOBAL_CONFIG } from '../../configs/global.config';
 
-import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './auth.dto';
+import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO, ResposeUserDTO } from './auth.dto';
+import { ApiBody, ApiResponse } from '@nestjs/swagger';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private userService: UserService,
-    private prisma: PrismaService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
+  @ApiBody({ type: LoginUserDTO })
+  @ApiResponse({ type: AuthResponseDTO })
   public async login(loginUserDTO: LoginUserDTO): Promise<AuthResponseDTO> {
-    const userData = await this.userService.findUser({
-      email: loginUserDTO.email,
+    const userData = await this.prisma.user.findUnique({
+      where: { email: loginUserDTO.email },
     });
 
     if (!userData) {
@@ -28,7 +25,7 @@ export class AuthService {
 
     const isMatch = await AuthHelpers.verify(
       loginUserDTO.password,
-      userData.password,
+      userData.password
     );
 
     if (!isMatch) {
@@ -37,9 +34,10 @@ export class AuthService {
 
     const payload: any = {
       id: userData.id,
+      companyId: 1,
       name: userData.name,
-      email: userData.email
-      // role: userData.role,
+      email: userData.email,
+      accessProfileId: userData.accessProfileId,
     };
 
     const accessToken = this.jwtService.sign(payload, {
@@ -47,11 +45,15 @@ export class AuthService {
     });
 
     return {
-      user: payload,
+      user: userData,
       accessToken: accessToken,
     };
   }
-  public async register(user: User): Promise<User> {
-    return this.userService.createUser(user);
+
+  //Cadastrar a empresa também
+  @ApiBody({ type: RegisterUserDTO })
+  @ApiResponse({ type: ResposeUserDTO })
+  public async register(data: User): Promise<User> {
+    return this.prisma.user.create({ data });
   }
 }

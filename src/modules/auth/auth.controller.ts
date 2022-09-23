@@ -3,7 +3,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 
 import { AuthService } from './auth.service';
-import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './auth.dto';
+import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO, ResposeUserDTO } from './auth.dto';
 import { addDossier } from '../../shared/helpers/dossier.helpers';
 
 @ApiTags('auth')
@@ -21,6 +21,8 @@ export class AuthController {
     return dbRes;
   }
 
+  @ApiBody({ type: RegisterUserDTO })
+  @ApiResponse({ type: ResposeUserDTO })
   @Post('register')
   async register(@Body() user: User): Promise<User> {
     return this.authService.register(user);

@@ -1,8 +1,3 @@
-generator Prisma_Code_Generator {
-  provider = "Prisma_Code_Generator"
-  output   = "../src/modules"
-}
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -32,7 +27,7 @@ model Company {
 model AccessProfile {
   id        Int      @id @default(autoincrement())
   name      String   @unique
-  allowed   Json[] 
+  allowed   Json[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -51,6 +46,7 @@ model User {
 
   AccessProfile AccessProfile @relation(fields: [accessProfileId], references: [id])
   Company       Company       @relation(fields: [companyId], references: [id])
+  Dossier       Dossier[]
 }
 
 model Product {
@@ -102,4 +98,15 @@ model SaleItem {
 
   Company Company @relation(fields: [companyId], references: [id])
   Sale    Sale    @relation(fields: [saleId], references: [id])
+}
+
+model Dossier {
+  id          Int      @id @default(autoincrement())
+  userId      Int?
+  actionType  String   @db.VarChar(100)
+  description String   @db.VarChar(100)
+  identifier  Int
+  timestamp   DateTime @default(now()) @db.Timestamptz
+
+  user User? @relation(fields: [userId], references: [id])
 }

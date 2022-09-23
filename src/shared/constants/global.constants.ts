@@ -2,6 +2,7 @@
 require('dotenv').config();
 
 export const JWT_SECRET = process.env.JWT_SIGNATURE;
+export const NODE_ENV = process.env.NODE_ENV;
 
 export enum ROLES_ENUM {
   ADMIN = 'admin',

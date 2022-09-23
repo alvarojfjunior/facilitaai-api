@@ -5,15 +5,16 @@ import { User } from '@prisma/client';
 import dotenv from 'dotenv'
 dotenv.config()
 
-import { JWT_SECRET } from '../../shared/constants/global.constants';
+import { JWT_SECRET, NODE_ENV } from '../../shared/constants/global.constants';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private prisma: PrismaService) {
+    console.log('JWT KEY', JWT_SECRET, NODE_ENV)
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: process.env.NODE_ENV === 'dev',
+      ignoreExpiration: NODE_ENV === 'dev',
       secretOrKey: JWT_SECRET,
     });
   }

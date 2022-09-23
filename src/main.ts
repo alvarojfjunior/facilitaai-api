@@ -11,8 +11,16 @@ import { InvalidFormExceptionFilter } from './filters/invalid.form.exception.fil
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: ['error', 'error', 'warn'],
-    cors: true
+    logger: ['error', 'error', 'warn']
+  });
+
+  app.enableCors({
+    origin: [
+      'http://localhost:3000',
+      'http://example.com',
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
   });
 
   app.setGlobalPrefix(API_PREFIX);

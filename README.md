@@ -15,3 +15,4 @@
 - Comandos úteis
  - `npx prisma format` - Mapeia e identa o schema.prisma
  -`npx prisma studio` - acesso ao banco de dados pelo Prisma Studio
+ - `git push heroku main` deploy

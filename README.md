@@ -13,5 +13,5 @@
   - Prisma
   - Prisma Insider
 - Comandos úteis
- - `yarn prisma format` - Mapeia e identa o schema.prisma
+ - `npx prisma format` - Mapeia e identa o schema.prisma
  -`npx prisma studio` - acesso ao banco de dados pelo Prisma Studio

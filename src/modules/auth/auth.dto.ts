@@ -9,11 +9,11 @@ export class AuthResponseDTO {
 }
 
 export class RegisterUserDTO {
+  companyId: number;
   email: string;
   name: string;
   password: string;
-  type: string;
-  department_id: number
+  accessProfileId: number; 
 }
 
 export class LoginUserDTO {

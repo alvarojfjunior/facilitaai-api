@@ -14,7 +14,20 @@ async function bootstrap() {
     logger: ['error', 'error', 'warn'],
   });
 
-  const whitelist = ['http://localhost:3000', 'https://facilitaai-api.herokuapp.com', 'https://facilitaai.vercel.app'];
+  app.setGlobalPrefix(API_PREFIX);
+
+  app.useGlobalFilters(
+    // TODO: uncomment when ready
+    // new GlobalExceptionFilter(),
+
+    new InvalidFormExceptionFilter()
+  );
+
+  const whitelist = [
+    'http://localhost:3000',
+    'https://facilitaai-api.herokuapp.com',
+    'https://facilitaai.vercel.app',
+  ];
   app.enableCors({
     origin: function (origin, callback) {
       if (whitelist.indexOf(origin) !== -1) {
@@ -30,15 +43,6 @@ async function bootstrap() {
     methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
     credentials: true,
   });
-
-  app.setGlobalPrefix(API_PREFIX);
-
-  app.useGlobalFilters(
-    // TODO: uncomment when ready
-    // new GlobalExceptionFilter(),
-
-    new InvalidFormExceptionFilter()
-  );
 
   const configService = app.get<ConfigService>(ConfigService);
   const swaggerConfig = configService.get<SwaggerConfig>('swagger');

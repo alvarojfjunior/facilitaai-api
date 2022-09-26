@@ -11,6 +11,7 @@ import { InvalidFormExceptionFilter } from './filters/invalid.form.exception.fil
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
+    cors: true,
     logger: ['error', 'error', 'warn'],
   });
 
@@ -23,25 +24,21 @@ async function bootstrap() {
     new InvalidFormExceptionFilter()
   );
 
-  const whitelist = [
-    'http://localhost:3000/',
-    'https://facilitaai-api.herokuapp.com/',
-    'https://facilitaai.vercel.app/',
-  ];
+  // enable cors
   app.enableCors({
-    origin: function (origin, callback) {
-      if (whitelist.indexOf(origin) !== -1) {
-        console.log('allowed cors for:', origin);
-        callback(null, true);
-      } else {
-        console.log('blocked cors for:', origin);
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    allowedHeaders:
-      'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
-    methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+  });
+
+  // all subdomains
+  app.enableCors({
+    origin: /^(https:\/\/([^\.]*\.)?example\.com)$/i,
+  });
+
+  // http or https
+  app.enableCors({
+    origin: /https?:\/\/(([^/]+\.)?example\.com)$/i,
   });
 
   const configService = app.get<ConfigService>(ConfigService);

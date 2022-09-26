@@ -29,7 +29,7 @@
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.6.13",
     "@nestjs/swagger": "^4.8.0",
-    "@nestjs/websockets": "^9.0.0",
+    "@nestjs/websockets": "^9.0.11",
     "@prisma/client": "^4.4.0-dev.69",
     "class-validator": "^0.13.1",
     "crypto": "^1.0.1",
@@ -73,6 +73,10 @@
     "ts-node": "~10.7.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "~4.6.4"
+  },
+  "engines": {
+    "node": "14.17.0",
+    "npm": "6.14.13"
   },
   "jest": {
     "moduleFileExtensions": [

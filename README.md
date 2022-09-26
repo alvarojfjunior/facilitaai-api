@@ -18,5 +18,6 @@
  - `git push heroku main` deploy
 
 # Deploy
+ - URL: https://facilitaai-api.onrender.com
  - Database: https://api.elephantsql.com/console/697f8810-9e8e-4e22-bcd6-e47c84f70d7a/browser?
  - API: https://dashboard.render.com/web/srv-ccp0f7qen0hrldblgb0g

@@ -33,12 +33,12 @@ async function bootstrap() {
 
   // all subdomains
   app.enableCors({
-    origin: /^(https:\/\/([^\.]*\.)?example\.com)$/i,
+    origin: /^(https:\/\/([^\.]*\.)?localhost:3000)$/i,
   });
 
   // http or https
   app.enableCors({
-    origin: /https?:\/\/(([^/]+\.)?example\.com)$/i,
+    origin: /https?:\/\/(([^/]+\.)?localhost:3000)$/i,
   });
 
   const configService = app.get<ConfigService>(ConfigService);

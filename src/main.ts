@@ -24,22 +24,17 @@ async function bootstrap() {
     new InvalidFormExceptionFilter()
   );
 
-  // enable cors
-  app.enableCors({
-    origin: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
-  });
-
-  // all subdomains
-  app.enableCors({
-    origin: /^(https:\/\/([^\.]*\.)?localhost:3000)$/i,
-  });
-
-  // http or https
-  app.enableCors({
-    origin: /https?:\/\/(([^/]+\.)?localhost:3000)$/i,
-  });
+  if (process.env.NODE_ENV === 'production') {
+    app.enableCors({
+      origin: 'http://localhost:3000',
+      credentials: true,
+    });
+  } else {
+    app.enableCors({
+      origin: true,
+      credentials: true,
+    });
+  }
 
   const configService = app.get<ConfigService>(ConfigService);
   const swaggerConfig = configService.get<SwaggerConfig>('swagger');

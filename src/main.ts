@@ -55,8 +55,8 @@ async function bootstrap() {
 
   await app.listen(PORT, async () => {
     const myLogger = await app.resolve(MyLogger);
-    myLogger.log(`Server started listening: ${PORT}`);
-    console.log(`Server started listening: ${PORT}`);
+    myLogger.log(`Server started`);
+    console.log(`Server started`);
   });
 }
 bootstrap();

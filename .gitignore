@@ -401,3 +401,5 @@ dist
 prisma/migrations
 
 .wwebjs_auth/
+# Local Netlify folder
+.netlify

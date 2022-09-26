@@ -24,9 +24,9 @@ async function bootstrap() {
   );
 
   const whitelist = [
-    'http://localhost:3000',
-    'https://facilitaai-api.herokuapp.com',
-    'https://facilitaai.vercel.app',
+    'http://localhost:3000/',
+    'https://facilitaai-api.herokuapp.com/',
+    'https://facilitaai.vercel.app/',
   ];
   app.enableCors({
     origin: function (origin, callback) {

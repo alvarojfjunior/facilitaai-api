@@ -16,7 +16,7 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 import { addDossier } from '../../shared/helpers/dossier.helpers';
-import { BodyRequestDTO, BodyResponseDTO } from './company.dto';
+import { CompanyRequestDTO, CompanyResponseDTO } from './company.dto';
 import QueryBuilder from 'prisma-query-builder';
 
 @UseGuards(JwtAuthGuard)
@@ -26,7 +26,7 @@ export class CompanyController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
-  @ApiResponse({ type: [BodyResponseDTO] })
+  @ApiResponse({ type: [CompanyResponseDTO] })
   async getAll(@Query() query: any): Promise<Company[]> {
     const queryBuilder = new QueryBuilder(query);
     return this.prisma.company.findMany(
@@ -35,14 +35,14 @@ export class CompanyController {
   }
 
   @Get(':id')
-  @ApiResponse({ type: BodyResponseDTO })
+  @ApiResponse({ type: CompanyResponseDTO })
   async getById(@Param('id') id: number): Promise<Company | null> {
     return this.prisma.company.findUnique({ where: { id: Number(id) } });
   }
 
   @Post()
-  @ApiBody({ type: BodyRequestDTO })
-  @ApiResponse({ type: BodyResponseDTO })
+  @ApiBody({ type: CompanyRequestDTO })
+  @ApiResponse({ type: CompanyResponseDTO })
   async create(
     @Body() data: Company,
     @Request() req: Request | any
@@ -55,8 +55,8 @@ export class CompanyController {
   }
 
   @Put(':id')
-  @ApiBody({ type: BodyRequestDTO })
-  @ApiResponse({ type: BodyResponseDTO })
+  @ApiBody({ type: CompanyRequestDTO })
+  @ApiResponse({ type: CompanyResponseDTO })
   async update(
     @Param('id') id: number,
     @Body() data: Company,
@@ -71,7 +71,7 @@ export class CompanyController {
   }
 
   @Delete(':id')
-  @ApiResponse({ type: BodyResponseDTO })
+  @ApiResponse({ type: CompanyResponseDTO })
   async delete(
     @Param('id') id: number,
     @Request() req: Request | any

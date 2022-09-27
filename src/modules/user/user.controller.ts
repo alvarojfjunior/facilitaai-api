@@ -16,7 +16,7 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 import { addDossier } from '../../shared/helpers/dossier.helpers';
-import { BodyUpdateRequestDTO, BodyResponseDTO } from './user.dto';
+import { UserUpdateRequestDTO, UserResponseDTO } from './user.dto';
 import QueryBuilder from 'prisma-query-builder';
 import { TResponseUser } from './user.types';
 
@@ -27,7 +27,7 @@ export class UserController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
-  @ApiResponse({ type: [BodyResponseDTO] })
+  @ApiResponse({ type: [UserResponseDTO] })
   async getAll(
     @Query() query: any,
     @Request() req: Request | any
@@ -45,7 +45,7 @@ export class UserController {
   }
 
   @Get(':id')
-  @ApiResponse({ type: BodyResponseDTO })
+  @ApiResponse({ type: UserResponseDTO })
   async getById(@Param('id') id: number): Promise<User | null> {
     const apiRes: any = await this.prisma.user.findUnique({
       where: { id: Number(id) },
@@ -55,8 +55,8 @@ export class UserController {
   }
 
   @Put(':id')
-  @ApiBody({ type: BodyUpdateRequestDTO })
-  @ApiResponse({ type: BodyResponseDTO })
+  @ApiBody({ type: UserUpdateRequestDTO })
+  @ApiResponse({ type: UserResponseDTO })
   async update(
     @Param('id') id: number,
     @Body() data: User,
@@ -72,8 +72,8 @@ export class UserController {
   }
 
   @Post()
-  @ApiBody({ type: BodyUpdateRequestDTO })
-  @ApiResponse({ type: BodyResponseDTO })
+  @ApiBody({ type: UserUpdateRequestDTO })
+  @ApiResponse({ type: UserResponseDTO })
   async create(
     @Body() data: User,
     @Request() req: Request | any
@@ -89,7 +89,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  @ApiResponse({ type: BodyResponseDTO })
+  @ApiResponse({ type: UserResponseDTO })
   async delete(
     @Param('id') id: number,
     @Request() req: Request | any

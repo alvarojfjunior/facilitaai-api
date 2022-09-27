@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class BodyUpdateRequestDTO {
+export class UserUpdateRequestDTO {
   @ApiProperty()
   email: string;
 
@@ -11,7 +11,7 @@ export class BodyUpdateRequestDTO {
   accessProfileId: number;
 }
 
-export class BodyResponseDTO {
+export class UserResponseDTO {
   @ApiProperty()
   email: string;
 

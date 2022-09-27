@@ -16,7 +16,7 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 import { addDossier } from '../../shared/helpers/dossier.helpers';
-import { BodyRequestDTO, BodyResponseDTO } from './product.dto';
+import { ProductRequestDTO, ProductResponseDTO } from './product.dto';
 import QueryBuilder from 'prisma-query-builder';
 
 @UseGuards(JwtAuthGuard)
@@ -26,7 +26,7 @@ export class ProductController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
-  @ApiResponse({ type: [BodyResponseDTO] })
+  @ApiResponse({ type: [ProductResponseDTO] })
   async getAll(
     @Query() query: any,
     @Request() req: Request | any
@@ -35,28 +35,27 @@ export class ProductController {
     console.log(queryBuilder.query);
     return this.prisma.product.findMany({
       where: {
-        AND: [queryBuilder.query, { companyId: req.user.companyId }],
+        AND: [queryBuilder.query, { companyId: req.user.companyId }]
       },
     });
   }
 
   @Get(':id')
-  @ApiResponse({ type: BodyResponseDTO })
+  @ApiResponse({ type: ProductResponseDTO })
   async getById(
     @Param('id') id: number,
     @Request() req: Request | any
   ): Promise<Product | null> {
     return this.prisma.product.findUnique({
       where: {
-        id: Number(id),
-        companyId: 1
+        id: Number(id)
       },
     });
   }
 
   @Post()
-  @ApiBody({ type: BodyRequestDTO })
-  @ApiResponse({ type: BodyResponseDTO })
+  @ApiBody({ type: ProductRequestDTO })
+  @ApiResponse({ type: ProductResponseDTO })
   async create(
     @Body() data: Product,
     @Request() req: Request | any
@@ -69,8 +68,8 @@ export class ProductController {
   }
 
   @Put(':id')
-  @ApiBody({ type: BodyRequestDTO })
-  @ApiResponse({ type: BodyResponseDTO })
+  @ApiBody({ type: ProductRequestDTO })
+  @ApiResponse({ type: ProductResponseDTO })
   async update(
     @Param('id') id: number,
     @Body() data: Product,
@@ -85,7 +84,7 @@ export class ProductController {
   }
 
   @Delete(':id')
-  @ApiResponse({ type: BodyResponseDTO })
+  @ApiResponse({ type: ProductResponseDTO })
   async delete(
     @Param('id') id: number,
     @Request() req: Request | any

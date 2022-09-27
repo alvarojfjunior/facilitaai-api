@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class BodyRequestDTO {
+export class CompanyRequestDTO {
   @ApiProperty()
   name: string;
 
@@ -18,7 +18,7 @@ export class BodyRequestDTO {
 }
 
 
-export class BodyResponseDTO {
+export class CompanyResponseDTO {
   @ApiProperty()
   id: number;
 

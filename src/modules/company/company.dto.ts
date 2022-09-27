@@ -14,7 +14,7 @@ export class BodyRequestDTO {
   whatsapp: string;
 
   @ApiProperty()
-  fone: string;
+  phone: string;
 }
 
 
@@ -35,5 +35,5 @@ export class BodyResponseDTO {
   whatsapp: string;
 
   @ApiProperty()
-  fone: string;
+  phone: string;
 }

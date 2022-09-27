@@ -27,11 +27,13 @@ export class UserController {
 
   @Get()
   @ApiResponse({ type: [BodyResponseDTO] })
-  async getAll(@Query() query: any): Promise<User[]> {
+  async getAll(
+    @Query() query: any,
+    @Request() req: Request | any
+  ): Promise<User[]> {
+    console.log(req.user);
     const queryBuilder = new QueryBuilder(query);
-    return this.prisma.user.findMany(
-      queryBuilder.filter().paginate().build()
-    );
+    return this.prisma.user.findMany(queryBuilder.filter().paginate().build());
   }
 
   @Get(':id')
@@ -53,6 +55,20 @@ export class UserController {
       data,
     });
     addDossier(req.user.id, 'Atualizou', 'Usuário', dbRes.id);
+    return dbRes;
+  }
+
+  @Post()
+  @ApiBody({ type: BodyUpdateRequestDTO })
+  @ApiResponse({ type: BodyResponseDTO })
+  async create(
+    @Body() data: User,
+    @Request() req: Request | any
+  ): Promise<User> {
+    const dbRes: User = await this.prisma.user.create({
+      data,
+    });
+    addDossier(req.user.id, 'Cadastrou', 'Usuário', dbRes.id);
     return dbRes;
   }
 

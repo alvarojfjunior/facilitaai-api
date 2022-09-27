@@ -7,7 +7,7 @@ export class UserListener {
   static async onCreated(params, next) {
     // Check incoming query type
     if (params.model == 'User') {
-      if (params.action === 'create' || params.action === 'update') {
+      if (params.args['data'] && params.args['data'].password && (params.action === 'create' || params.action === 'update')) {
         const password = params.args['data'].password;
 
         const encryptedPass = await AuthHelpers.hash(password);

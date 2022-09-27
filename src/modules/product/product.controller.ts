@@ -11,46 +11,60 @@ import {
   Request,
   Query,
 } from '@nestjs/common';
-import { Company } from '@prisma/client';
+import { Product } from '@prisma/client';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 import { addDossier } from '../../shared/helpers/dossier.helpers';
-import { BodyRequestDTO, BodyResponseDTO } from './company.dto';
+import { BodyRequestDTO, BodyResponseDTO } from './product.dto';
 import QueryBuilder from 'prisma-query-builder';
 
 @UseGuards(JwtAuthGuard)
-@ApiTags('company')
-@Controller('company')
-export class CompanyController {
+@ApiTags('product')
+@Controller('product')
+export class ProductController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
   @ApiResponse({ type: [BodyResponseDTO] })
-  async getAll(@Query() query: any): Promise<Company[]> {
+  async getAll(
+    @Query() query: any,
+    @Request() req: Request | any
+  ): Promise<Product[]> {
     const queryBuilder = new QueryBuilder(query);
-    return this.prisma.company.findMany(
-      queryBuilder.filter().paginate().build()
-    );
+    console.log(queryBuilder.query);
+    return this.prisma.product.findMany({
+      where: {
+        AND: [queryBuilder.query, { companyId: req.user.companyId }],
+      },
+    });
   }
 
   @Get(':id')
   @ApiResponse({ type: BodyResponseDTO })
-  async getById(@Param('id') id: number): Promise<Company | null> {
-    return this.prisma.company.findUnique({ where: { id: Number(id) } });
+  async getById(
+    @Param('id') id: number,
+    @Request() req: Request | any
+  ): Promise<Product | null> {
+    return this.prisma.product.findUnique({
+      where: {
+        id: Number(id),
+        companyId: 1
+      },
+    });
   }
 
   @Post()
   @ApiBody({ type: BodyRequestDTO })
   @ApiResponse({ type: BodyResponseDTO })
   async create(
-    @Body() data: Company,
+    @Body() data: Product,
     @Request() req: Request | any
-  ): Promise<Company> {
-    const dbRes: Company = await this.prisma.company.create({
+  ): Promise<Product> {
+    const dbRes: Product = await this.prisma.product.create({
       data,
     });
-    addDossier(req.user.id, 'Inseriu', 'Empresa', dbRes.id);
+    addDossier(req.user.id, 'Inseriu', 'Produto', dbRes.id);
     return dbRes;
   }
 
@@ -59,14 +73,14 @@ export class CompanyController {
   @ApiResponse({ type: BodyResponseDTO })
   async update(
     @Param('id') id: number,
-    @Body() data: Company,
+    @Body() data: Product,
     @Request() req: Request | any
-  ): Promise<Company> {
-    const dbRes: Company = await this.prisma.company.update({
+  ): Promise<Product> {
+    const dbRes: Product = await this.prisma.product.update({
       where: { id: Number(id) },
       data,
     });
-    addDossier(req.user.id, 'Atualizou', 'Empresa', dbRes.id);
+    addDossier(req.user.id, 'Atualizou', 'Produto', dbRes.id);
     return dbRes;
   }
 
@@ -75,11 +89,11 @@ export class CompanyController {
   async delete(
     @Param('id') id: number,
     @Request() req: Request | any
-  ): Promise<Company> {
-    const dbRes: Company = await this.prisma.company.delete({
+  ): Promise<Product> {
+    const dbRes: Product = await this.prisma.product.delete({
       where: { id: Number(id) },
     });
-    addDossier(req.user.id, 'Deletou', 'Empresa', dbRes.id);
+    addDossier(req.user.id, 'Deletou', 'Produto', dbRes.id);
     return dbRes;
   }
 }

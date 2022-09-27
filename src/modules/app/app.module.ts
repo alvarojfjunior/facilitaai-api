@@ -6,6 +6,7 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { UserModule } from '../user/user.module';
 import { DossierModule } from '../dossier/dossier.module';
 import { CompanyModule } from '../company/company.module';
+import { ProductuModule } from '../product/product.module';
 
 import { GLOBAL_CONFIG } from '../../configs/global.config';
 import { LoggerModule } from '../logger/logger.module';
@@ -21,7 +22,8 @@ import { AppController } from './app.controller';
     UserModule,
     DossierModule,
     CompanyModule,
-    ConfigModule.forRoot({ isGlobal: true, load: [() => GLOBAL_CONFIG] })
+    ProductuModule,
+    ConfigModule.forRoot({ isGlobal: true, load: [() => GLOBAL_CONFIG] }),
   ],
   controllers: [AppController],
   providers: [AppService],

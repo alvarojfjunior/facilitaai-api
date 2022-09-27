@@ -36,4 +36,10 @@ export class BodyResponseDTO {
 
   @ApiProperty()
   phone: string;
+
+  @ApiProperty()
+  createdAt: Date
+
+  @ApiProperty()
+  updatedAt: Date
 }

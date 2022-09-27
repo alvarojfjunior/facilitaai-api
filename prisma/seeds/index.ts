@@ -7,7 +7,7 @@ const companies: Prisma.CompanyCreateInput[] = [
     slogan: 'Facilitar o seu negócio é o nosso negócio',
     color: '#fff',
     whatsapp: '553891611042',
-    fone: '553891611042',
+    phone: '553891611042',
   },
 ];
 

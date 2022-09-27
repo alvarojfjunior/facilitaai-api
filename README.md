@@ -6,7 +6,9 @@
    - senha: root
    - porta: 5432
  - `npm i`
- - Sincronizar estrutura do banco `npx prisma migrate dev`. Para produção, rodar: `npx prisma migrate reset`
+ - Run migrations in dev: `npx prisma migrate dev --name migration_name`. 
+ - Run migrations in production: `npx prisma migrate deploy`
+ - Reset migrations database: `npx prisma migrate reset`
  - Cria os primeiros registros no banco `npm run seed`
  - `npm run start:dev`
  - Extensões sugeridas (VSCode)

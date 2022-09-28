@@ -5,7 +5,7 @@ export class SaleRequestDTO {
   observation: string;
 
   @ApiProperty()
-  canceled: boolean;
+  canceled: number;
 
   @ApiProperty()
   amount: number;
@@ -20,7 +20,7 @@ export class SaleResponseDTO {
   observation: string;
 
   @ApiProperty()
-  canceled: boolean;
+  canceled: number;
 
   @ApiProperty()
   amount: number;

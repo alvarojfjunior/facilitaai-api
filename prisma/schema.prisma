@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Company {
@@ -15,7 +15,7 @@ model Company {
   whatsapp  String
   phone     String
   payDay    DateTime @default(now())
-  active    Boolean  @default(true)
+  active    Int      @default(1)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -60,7 +60,7 @@ model User {
   name            String
   password        String
   accessProfileId Int
-  active          Boolean  @default(true)
+  active          Int      @default(1)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -86,7 +86,7 @@ model Ecommerce {
   companyId  Int
   color      String
   templateId Int
-  active     Boolean  @default(true)
+  active     Int      @default(1)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -108,7 +108,7 @@ model Product {
   companyId   Int
   name        String
   stock       Decimal
-  active      Boolean  @default(true)
+  active      Int      @default(1)
   price       Decimal  @db.Money
   description String?
   createdAt   DateTime @default(now())
@@ -123,7 +123,7 @@ model Service {
   name        String
   description String?
   price       Decimal? @db.Money
-  active      Boolean  @default(true)
+  active      Int      @default(1)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -138,7 +138,7 @@ model Client {
   name        String
   phone       String?
   whatsapp    String?
-  active      Boolean  @default(true)
+  active      Int      @default(1)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -150,7 +150,7 @@ model Sale {
   id          Int      @id @default(autoincrement())
   companyId   Int
   observation String?
-  canceled    Boolean  @default(false)
+  canceled    Int      @default(0)
   amount      Decimal  @db.Money
   date        DateTime @default(now())
   createdAt   DateTime @default(now())
@@ -165,7 +165,7 @@ model SaleItem {
   companyId    Int
   type         String //product | service
   saleId       Int
-  itemId       Int    //product | service
+  itemId       Int //product | service
   observation  String?
   initialValue Decimal  @db.Money
   discount     Decimal  @db.Money
@@ -186,7 +186,7 @@ model Invoice {
   value       Decimal  @db.Money
   clientId    Int?
   date        DateTime
-  closed      Boolean  @default(false)
+  closed      Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

@@ -17,7 +17,7 @@ export class ClientRequestDTO {
   whatsapp?: string;
 
   @ApiProperty()
-  active: boolean;
+  active: number;
 }
 
 export class ClientResponseDTO {
@@ -43,7 +43,7 @@ export class ClientResponseDTO {
   whatsapp: string;
 
   @ApiProperty()
-  active: boolean;
+  active: number;
 
   @ApiProperty()
   createdAt: Date;

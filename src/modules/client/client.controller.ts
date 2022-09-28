@@ -11,28 +11,28 @@ import {
   Request,
   Query,
 } from '@nestjs/common';
-import { Product } from '@prisma/client';
+import { Client } from '@prisma/client';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 import { addDossier } from '../../shared/helpers/dossier.helpers';
-import { ProductRequestDTO, ProductResponseDTO } from './product.dto';
+import { ClientRequestDTO, ClientResponseDTO } from './client.dto';
 import QueryBuilder from 'prisma-query-builder';
 
 @UseGuards(JwtAuthGuard)
-@ApiTags('product')
-@Controller('product')
-export class ProductController {
+@ApiTags('client')
+@Controller('client')
+export class ClientController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
-  @ApiResponse({ type: [ProductResponseDTO] })
+  @ApiResponse({ type: [ClientResponseDTO] })
   async getAll(
     @Query() query: any,
     @Request() req: Request | any
-  ): Promise<Product[]> {
+  ): Promise<Client[]> {
     const queryBuilder = new QueryBuilder(query);
-    const apiRes: Product[] = await this.prisma.product.findMany({
+    const apiRes: Client[] = await this.prisma.client.findMany({
       where: {
         AND: [queryBuilder.query, { companyId: req.user.companyId }],
       },
@@ -41,61 +41,61 @@ export class ProductController {
   }
 
   @Get(':id')
-  @ApiResponse({ type: ProductResponseDTO })
+  @ApiResponse({ type: ClientResponseDTO })
   async getById(
     @Param('id') id: number,
     @Request() req: Request | any
-  ): Promise<Product | null> {
-    const apiRes: any = await this.prisma.product.findFirst({
+  ): Promise<Client | null> {
+    const apiRes: any = await this.prisma.client.findFirst({
       where: {
-        AND: [{ id: Number(id) }, { companyId: req.user.companyId }],
+        AND: [{ id: Number(id) }, { companyId: req.client.companyId }],
       },
     });
     return apiRes;
   }
 
   @Put(':id')
-  @ApiBody({ type: ProductRequestDTO })
-  @ApiResponse({ type: ProductResponseDTO })
+  @ApiBody({ type: ClientRequestDTO })
+  @ApiResponse({ type: ClientResponseDTO })
   async update(
     @Param('id') id: number,
-    @Body() data: Product,
+    @Body() data: Client,
     @Request() req: Request | any
-  ): Promise<Product> {
-    const apiRes: any = await this.prisma.product.update({
+  ): Promise<Client> {
+    const apiRes: any = await this.prisma.client.update({
       where: { id: Number(id) },
       data,
     });
-    addDossier(req.user.companyId, req.user.id, 'Atualizou', 'Produto', apiRes.id);
+    addDossier(req.client.companyId, req.client.id, 'Atualizou', 'Cliente', apiRes.id);
     return apiRes;
   }
 
   @Post()
-  @ApiBody({ type: ProductRequestDTO })
-  @ApiResponse({ type: ProductResponseDTO })
+  @ApiBody({ type: ClientRequestDTO })
+  @ApiResponse({ type: ClientResponseDTO })
   async create(
-    @Body() data: Product,
+    @Body() data: Client,
     @Request() req: Request | any
-  ): Promise<Product> {
-    data.companyId = req.user.companyId;
-    const apiRes: any = await this.prisma.product.create({
+  ): Promise<Client> {
+    data.companyId = req.client.companyId;
+    const apiRes: any = await this.prisma.client.create({
       data,
     });
-    addDossier(req.user.companyId, req.user.id, 'Cadastrou', 'Produto', apiRes.id);
+    addDossier(req.client.companyId, req.client.id, 'Cadastrou', 'Cliente', apiRes.id);
     delete apiRes.password;
     return apiRes;
   }
 
   @Delete(':id')
-  @ApiResponse({ type: ProductResponseDTO })
+  @ApiResponse({ type: ClientResponseDTO })
   async delete(
     @Param('id') id: number,
     @Request() req: Request | any
-  ): Promise<Product> {
-    const apiRes: any = await this.prisma.product.delete({
+  ): Promise<Client> {
+    const apiRes: any = await this.prisma.client.delete({
       where: { id: Number(id) },
     });
-    addDossier(req.user.companyId, req.user.id, 'Deletou', 'Produto', apiRes.id);
+    addDossier(req.client.companyId, req.client.id, 'Deletou', 'Cliente', apiRes.id);
     delete apiRes.password;
     return apiRes;
   }

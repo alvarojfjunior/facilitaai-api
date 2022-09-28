@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ProductRequestDTO {
+export class ClientRequestDTO {
   @ApiProperty()
   name: string;
 
@@ -8,22 +8,21 @@ export class ProductRequestDTO {
   description?: string;
 
   @ApiProperty()
-  price: number;
+  address?: string;
 
   @ApiProperty()
-  active?: number;
+  phone?: string;
 
   @ApiProperty()
-  stock: number;
+  whatsapp?: string;
+
+  @ApiProperty()
+  active: boolean;
 }
 
-
-export class ProductResponseDTO {
+export class ClientResponseDTO {
   @ApiProperty()
   id: number;
-
-  @ApiProperty()
-  companyId: number;
 
   @ApiProperty()
   name: string;
@@ -32,14 +31,23 @@ export class ProductResponseDTO {
   description: string;
 
   @ApiProperty()
-  price: number;
+  companyId: number;
 
   @ApiProperty()
-  active: number;
+  address: string;
 
   @ApiProperty()
-  createdAt: Date
+  phone: string;
 
   @ApiProperty()
-  updatedAt: Date
+  whatsapp: string;
+
+  @ApiProperty()
+  active: boolean;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
 }

@@ -15,14 +15,33 @@ model Company {
   color     String?
   whatsapp  String
   phone     String
+  payDay    DateTime @default(now())
+  active    Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  User     User[]
-  Product  Product[]
-  Sale     Sale[]
-  Client   Client[]
-  SaleItem SaleItem[]
+  User           User[]
+  Product        Product[]
+  Sale           Sale[]
+  Client         Client[]
+  SaleItem       SaleItem[]
+  Dossier        Dossier[]
+  associate      Association[]
+  Ecommerce      Ecommerce[]
+  LicenseInvoice LicenseInvoice[]
+  Service        Service[]
+  Invoice        Invoice[]
+}
+
+model LicenseInvoice {
+  id        Int      @id @default(autoincrement())
+  companyId Int
+  value     Decimal  @db.Money
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Company Company @relation(fields: [companyId], references: [id])
 }
 
 model AccessProfile {
@@ -42,42 +61,99 @@ model User {
   name            String
   password        String
   accessProfileId Int
+  active          Boolean  @default(true)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
   AccessProfile AccessProfile @relation(fields: [accessProfileId], references: [id])
   Company       Company       @relation(fields: [companyId], references: [id])
+  associate     Association[]
+}
+
+model Association {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  companyId Int
+  percent   Decimal
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User    User    @relation(fields: [userId], references: [id])
+  Company Company @relation(fields: [companyId], references: [id])
+}
+
+model Ecommerce {
+  id         Int      @id @default(autoincrement())
+  companyId  Int
+  color      String
+  templateId Int
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  Company  Company  @relation(fields: [companyId], references: [id])
+  Template Template @relation(fields: [templateId], references: [id])
+}
+
+model Template {
+  id        Int      @id @default(autoincrement())
+  template  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Ecommerce Ecommerce[]
 }
 
 model Product {
-  id        Int      @id @default(autoincrement())
-  companyId Int
-  name      String
-  price     Decimal  @db.Money
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  companyId   Int
+  name        String
+  stock       Decimal
+  active      Boolean  @default(true)
+  price       Decimal  @db.Money
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  Company Company @relation(fields: [companyId], references: [id])
+}
+
+model Service {
+  id          Int      @id @default(autoincrement())
+  companyId   Int
+  name        String
+  description String?
+  price       Decimal? @db.Money
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   Company Company @relation(fields: [companyId], references: [id])
 }
 
 model Client {
-  id        Int      @id @default(autoincrement())
-  companyId Int
-  address   String?
-  name      String
-  phone     String?
-  whatsapp  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  companyId   Int
+  description String?
+  address     String?
+  name        String
+  phone       String?
+  whatsapp    String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  Company Company @relation(fields: [companyId], references: [id])
+  Company Company   @relation(fields: [companyId], references: [id])
+  Invoice Invoice[]
 }
 
 model Sale {
   id          Int      @id @default(autoincrement())
   companyId   Int
   observation String?
+  canceled    Boolean  @default(false)
   amount      Decimal  @db.Money
+  date        DateTime @default(now())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -88,11 +164,14 @@ model Sale {
 model SaleItem {
   id           Int      @id @default(autoincrement())
   companyId    Int
+  type         String //product | service
   saleId       Int
+  itemId       Int    //product | service
   observation  String?
   initialValue Decimal  @db.Money
   discount     Decimal  @db.Money
   finalValue   Decimal  @db.Money
+  date         DateTime @default(now())
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -100,11 +179,30 @@ model SaleItem {
   Sale    Sale    @relation(fields: [saleId], references: [id])
 }
 
+model Invoice {
+  id          Int      @id @default(autoincrement())
+  companyId   Int
+  type        String //pay/recive
+  description String //pay/recive
+  value       Decimal  @db.Money
+  clientId    Int?
+  date        DateTime
+  closed      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  Client  Client? @relation(fields: [clientId], references: [id])
+  Company Company @relation(fields: [companyId], references: [id])
+}
+
 model Dossier {
   id          Int      @id @default(autoincrement())
+  companyId   Int
   userId      Int
   actionType  String   @db.VarChar(100)
   description String   @db.VarChar(100)
   identifier  Int
   timestamp   DateTime @default(now()) @db.Timestamptz
+
+  Company Company @relation(fields: [companyId], references: [id])
 }

@@ -50,7 +50,7 @@ export class CompanyController {
     const dbRes: Company = await this.prisma.company.create({
       data,
     });
-    addDossier(req.user.id, 'Inseriu', 'Empresa', dbRes.id);
+    addDossier(req.user.companyId, req.user.id, 'Inseriu', 'Empresa', dbRes.id);
     return dbRes;
   }
 
@@ -66,7 +66,7 @@ export class CompanyController {
       where: { id: Number(id) },
       data,
     });
-    addDossier(req.user.id, 'Atualizou', 'Empresa', dbRes.id);
+    addDossier(req.user.companyId, req.user.id, 'Atualizou', 'Empresa', dbRes.id);
     return dbRes;
   }
 
@@ -79,7 +79,7 @@ export class CompanyController {
     const dbRes: Company = await this.prisma.company.delete({
       where: { id: Number(id) },
     });
-    addDossier(req.user.id, 'Deletou', 'Empresa', dbRes.id);
+    addDossier(req.user.companyId, req.user.id, 'Deletou', 'Empresa', dbRes.id);
     return dbRes;
   }
 }

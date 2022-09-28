@@ -17,7 +17,7 @@ export class AuthController {
   @ApiResponse({ type: AuthResponseDTO })
   async login(@Body() user: LoginUserDTO): Promise<AuthResponseDTO> {
     const dbRes = await this.authService.login(user);
-    addDossier(dbRes.user.id, 'Conectou', 'Autenticação', dbRes.user.id);
+    addDossier(dbRes.user.companyId, dbRes.user.id, 'Conectou', 'Autenticação', dbRes.user.id);
     return dbRes;
   }
 

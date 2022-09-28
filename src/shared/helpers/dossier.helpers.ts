@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const addDossier = async (
+  companyId: number,
   userId: number,
   actionType: string,
   description: string,
@@ -12,6 +13,7 @@ export const addDossier = async (
   try {
     const res = await prisma.dossier.create({
       data: {
+        companyId: companyId,
         userId: userId,
         actionType: actionType,
         description: description,

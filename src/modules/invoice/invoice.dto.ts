@@ -1,44 +1,44 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ProductRequestDTO {
-  @ApiProperty()
-  name: string;
-
+export class InvoiceRequestDTO {
   @ApiProperty()
   description?: string;
 
   @ApiProperty()
-  price: number;
+  type: string;
 
   @ApiProperty()
-  active?: number;
+  closed?: number;
 
   @ApiProperty()
-  stock: number;
+  value: number;
+
+  @ApiProperty()
+  clientId: number;
+
+  @ApiProperty()
+  date: Date;
 }
 
 
-export class ProductResponseDTO {
+export class InvoiceResponseDTO {
   @ApiProperty()
-  id: number;
+  description?: string;
 
   @ApiProperty()
-  companyId: number;
+  type: string;
 
   @ApiProperty()
-  name: string;
+  closed: number;
 
   @ApiProperty()
-  description: string;
+  value: number;
 
   @ApiProperty()
-  price: number;
+  clientId: number;
 
   @ApiProperty()
-  active: number;
-
-  @ApiProperty()
-  createdAt: Date
+  date: Date;
 
   @ApiProperty()
   updatedAt: Date

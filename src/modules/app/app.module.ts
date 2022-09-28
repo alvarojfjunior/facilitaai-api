@@ -7,6 +7,11 @@ import { UserModule } from '../user/user.module';
 import { DossierModule } from '../dossier/dossier.module';
 import { CompanyModule } from '../company/company.module';
 import { ProductuModule } from '../product/product.module';
+import { ServiceuModule } from '../service/service.module';
+import { ClientuModule } from '../client/client.module';
+import { InvoiceuModule } from '../invoice/invoice.module';
+import { SaleuModule } from '../sale/sale.module';
+import { SaleItemuModule } from '../saleItem/saleItem.module';
 
 import { GLOBAL_CONFIG } from '../../configs/global.config';
 import { LoggerModule } from '../logger/logger.module';
@@ -23,6 +28,11 @@ import { AppController } from './app.controller';
     DossierModule,
     CompanyModule,
     ProductuModule,
+    ServiceuModule,
+    ClientuModule,
+    InvoiceuModule,
+    SaleuModule,
+    SaleItemuModule,
     ConfigModule.forRoot({ isGlobal: true, load: [() => GLOBAL_CONFIG] }),
   ],
   controllers: [AppController],

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ProductRequestDTO {
+export class ServiceRequestDTO {
   @ApiProperty()
   name: string;
 
@@ -12,13 +12,10 @@ export class ProductRequestDTO {
 
   @ApiProperty()
   active?: number;
-
-  @ApiProperty()
-  stock: number;
 }
 
 
-export class ProductResponseDTO {
+export class ServiceResponseDTO {
   @ApiProperty()
   id: number;
 

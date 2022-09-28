@@ -11,29 +11,28 @@ import {
   Request,
   Query,
 } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { Sale } from '@prisma/client';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 import { addDossier } from '../../shared/helpers/dossier.helpers';
-import { UserUpdateRequestDTO, UserResponseDTO } from './user.dto';
+import { SaleRequestDTO, SaleResponseDTO } from './sale.dto';
 import QueryBuilder from 'prisma-query-builder';
-import { TResponseUser } from './user.types';
 
 @UseGuards(JwtAuthGuard)
-@ApiTags('user')
-@Controller('user')
-export class UserController {
+@ApiTags('sale')
+@Controller('sale')
+export class SaleController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
-  @ApiResponse({ type: [UserResponseDTO] })
+  @ApiResponse({ type: [SaleResponseDTO] })
   async getAll(
     @Query() query: any,
     @Request() req: Request | any
-  ): Promise<User[]> {
+  ): Promise<Sale[]> {
     const queryBuilder = new QueryBuilder(query);
-    const apiRes: User[] = await this.prisma.user.findMany({
+    const apiRes: Sale[] = await this.prisma.sale.findMany({
       where: {
         AND: [queryBuilder.query, { companyId: req.user.companyId }],
       },
@@ -45,12 +44,12 @@ export class UserController {
   }
 
   @Get(':id')
-  @ApiResponse({ type: UserResponseDTO })
+  @ApiResponse({ type: SaleResponseDTO })
   async getById(
     @Param('id') id: number,
     @Request() req: Request | any
-  ): Promise<User | null> {
-    const apiRes: any = await this.prisma.user.findFirst({
+  ): Promise<Sale | null> {
+    const apiRes: any = await this.prisma.sale.findFirst({
       where: {
         AND: [{ id: Number(id) }, { companyId: req.user.companyId }],
       },
@@ -60,50 +59,48 @@ export class UserController {
   }
 
   @Put(':id')
-  @ApiBody({ type: UserUpdateRequestDTO })
-  @ApiResponse({ type: UserResponseDTO })
+  @ApiBody({ type: SaleRequestDTO })
+  @ApiResponse({ type: SaleResponseDTO })
   async update(
     @Param('id') id: number,
-    @Body() data: User,
+    @Body() data: Sale,
     @Request() req: Request | any
-  ): Promise<TResponseUser> {
-    const apiRes: any = await this.prisma.user.update({
+  ): Promise<Sale> {
+    const apiRes: any = await this.prisma.sale.update({
       where: { id: Number(id) },
       data,
     });
-    addDossier(req.user.companyId, req.user.id, 'Atualizou', 'Usuário', apiRes.id);
+    addDossier(req.user.companyId, req.user.id, 'Atualizou', 'Venda', apiRes.id);
     delete apiRes.password;
     return apiRes;
   }
 
   @Post()
-  @ApiBody({ type: UserUpdateRequestDTO })
-  @ApiResponse({ type: UserResponseDTO })
+  @ApiBody({ type: SaleRequestDTO })
+  @ApiResponse({ type: SaleResponseDTO })
   async create(
-    @Body() data: User,
+    @Body() data: Sale,
     @Request() req: Request | any
-  ): Promise<TResponseUser> {
+  ): Promise<Sale> {
     data.companyId = req.user.companyId;
-    data.password =
-      'ae8fb6dc49b8d11f:676e5b99fd3760d88ba5be1cb92fa1cce6f8080cb616dd5baaf09b2e9a4abb5298e6d2aa86a9f7e9c2c6dfebcc3ed2e87b869f99a7a43fa7b7e69ef8ead3c68c';
-    const apiRes: any = await this.prisma.user.create({
+    const apiRes: any = await this.prisma.sale.create({
       data,
     });
-    addDossier(req.user.companyId, req.user.id, 'Cadastrou', 'Usuário', apiRes.id);
+    addDossier(req.user.companyId, req.user.id, 'Cadastrou', 'Venda', apiRes.id);
     delete apiRes.password;
     return apiRes;
   }
 
   @Delete(':id')
-  @ApiResponse({ type: UserResponseDTO })
+  @ApiResponse({ type: SaleResponseDTO })
   async delete(
     @Param('id') id: number,
     @Request() req: Request | any
-  ): Promise<TResponseUser> {
-    const apiRes: any = await this.prisma.user.delete({
+  ): Promise<Sale> {
+    const apiRes: any = await this.prisma.sale.delete({
       where: { id: Number(id) },
     });
-    addDossier(req.user.companyId, req.user.id, 'Deletou', 'Usuário', apiRes.id);
+    addDossier(req.user.companyId, req.user.id, 'Deletou', 'Venda', apiRes.id);
     delete apiRes.password;
     return apiRes;
   }

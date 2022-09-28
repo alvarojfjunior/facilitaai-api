@@ -6,6 +6,7 @@
    - senha: root
    - porta: 5432
  - `npm i`
+ - Run `npx prisma generate`
  - Run migrations in dev: `npx prisma migrate dev --name migration_name`. 
  - Run migrations in production: `npx prisma migrate deploy`
  - Reset migrations database: `npx prisma migrate reset`
@@ -16,7 +17,7 @@
   - Prisma Insider
 - Comandos úteis
  - `npx prisma format` - Mapeia e identa o schema.prisma
- -`npx prisma studio` - acesso ao banco de dados pelo Prisma Studio
+ - `npx prisma studio` - acesso ao banco de dados pelo Prisma Studio
  - `git push heroku main` deploy
 
 # Deploy

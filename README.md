@@ -23,4 +23,5 @@
 # Deploy AWS
  - `ssh -i utils/key-par-access.pem ec2-user@34.204.2.93`
  - `git pull`
- - `sudo docker-compose -f docker-compose-prod.yml up --build -b --remove-orphans nestapp`
+ - `sudo docker-compose -f docker-compose-prod.yml down -v`
+ - `sudo docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans nestapp`

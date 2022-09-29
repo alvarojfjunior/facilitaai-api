@@ -26,12 +26,14 @@ async function bootstrap() {
 
   if (process.env.NODE_ENV === 'production') {
     app.enableCors({
-      origin: true,
+      allowedHeaders: '*',
+      origin: '*',
       credentials: true,
     });
   } else {
     app.enableCors({
-      origin: true,
+      allowedHeaders: '*',
+      origin: '*',
       credentials: true,
     });
   }

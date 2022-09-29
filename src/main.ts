@@ -24,20 +24,15 @@ async function bootstrap() {
     new InvalidFormExceptionFilter()
   );
 
-  if (process.env.NODE_ENV === 'production') {
-    app.enableCors({
-      allowedHeaders: '*',
-      origin: '*',
-      credentials: true,
-    });
-  } else {
-    app.enableCors({
-      allowedHeaders: '*',
-      origin: '*',
-      credentials: true,
-    });
-  }
-
+  
+  app.enableCors({
+    origin: [
+      'http://localhost:3000',
+      'https://facilitaai.vercel.app'
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  });
   const configService = app.get<ConfigService>(ConfigService);
   const swaggerConfig = configService.get<SwaggerConfig>('swagger');
 

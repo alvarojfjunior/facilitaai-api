@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN prisma db push
+RUN npx prisma db push
 
 COPY . .
 

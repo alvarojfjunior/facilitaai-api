@@ -21,7 +21,7 @@ services:
       context: .
       dockerfile: dockerfile.prod
     ports:
-      - 443:3333
+      - 80:3333
     env_file:
       - .env
     networks:

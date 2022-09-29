@@ -20,7 +20,5 @@
  - `npx prisma studio` - acesso ao banco de dados pelo Prisma Studio
  - `git push heroku main` deploy
 
-# Deploy
- - URL: https://facilitaai-api.onrender.com
- - Database: https://data.heroku.com/datastores/804df876-de25-4767-8abb-150758d44a7b#
- - API: https://dashboard.render.com/web/srv-ccp0f7qen0hrldblgb0g
+# Deploy AWS
+ - `ssh -i utils/key-par-access.pem ec2-user@34.204.2.93`

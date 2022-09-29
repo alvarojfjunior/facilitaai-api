@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:13
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-root}
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - webnet
+
+  nestapp:
+    container_name: nestapp
+    build:
+      context: .
+      dockerfile: dockerfile.prod
+    ports:
+      - 3333:3333
+    env_file:
+      - .env
+    networks:
+      - webnet
+    depends_on:
+      - postgres
+
+networks:
+  webnet:
+volumes:
+  pgdata:

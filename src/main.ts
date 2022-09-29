@@ -15,6 +15,13 @@ async function bootstrap() {
     logger: ['error', 'error', 'warn'],
   });
 
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
+    next();
+  });
+
   app.setGlobalPrefix(API_PREFIX);
 
   app.useGlobalFilters(
@@ -24,13 +31,9 @@ async function bootstrap() {
     new InvalidFormExceptionFilter()
   );
 
-  
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'https://facilitaai.vercel.app'
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    origin: ['http://localhost:3000', 'https://facilitaai.vercel.app'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
   const configService = app.get<ConfigService>(ConfigService);

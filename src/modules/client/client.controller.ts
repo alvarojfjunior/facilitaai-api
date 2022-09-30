@@ -48,7 +48,7 @@ export class ClientController {
   ): Promise<Client | null> {
     const apiRes: any = await this.prisma.client.findFirst({
       where: {
-        AND: [{ id: Number(id) }, { companyId: req.client.companyId }],
+        AND: [{ id: Number(id) }, { companyId: req.user.companyId }],
       },
     });
     return apiRes;
@@ -66,7 +66,7 @@ export class ClientController {
       where: { id: Number(id) },
       data,
     });
-    addDossier(req.client.companyId, req.client.id, 'Atualizou', 'Cliente', apiRes.id);
+    addDossier(req.user.companyId, req.user.id, 'Atualizou', 'Cliente', apiRes.id);
     return apiRes;
   }
 
@@ -77,11 +77,11 @@ export class ClientController {
     @Body() data: Client,
     @Request() req: Request | any
   ): Promise<Client> {
-    data.companyId = req.client.companyId;
+    data.companyId = req.user.companyId;
     const apiRes: any = await this.prisma.client.create({
       data,
     });
-    addDossier(req.client.companyId, req.client.id, 'Cadastrou', 'Cliente', apiRes.id);
+    addDossier(req.user.companyId, req.user.id, 'Cadastrou', 'Cliente', apiRes.id);
     delete apiRes.password;
     return apiRes;
   }
@@ -95,7 +95,7 @@ export class ClientController {
     const apiRes: any = await this.prisma.client.delete({
       where: { id: Number(id) },
     });
-    addDossier(req.client.companyId, req.client.id, 'Deletou', 'Cliente', apiRes.id);
+    addDossier(req.user.companyId, req.user.id, 'Deletou', 'Cliente', apiRes.id);
     delete apiRes.password;
     return apiRes;
   }

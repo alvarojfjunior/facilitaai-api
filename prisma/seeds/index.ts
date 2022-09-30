@@ -14,6 +14,11 @@ const companies: Prisma.CompanyCreateInput[] = [
 const accessProfiles: Prisma.AccessProfileCreateInput[] = [
   {
     name: 'admin',
+    Company: {
+      connect: {
+        id: 1,
+      },
+    },
     allowed: [
       {
         name: 'user',
